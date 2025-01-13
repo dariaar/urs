@@ -1,38 +1,58 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom'; // Ispravan import za navigaciju
-import image1 from './slike/image1.jpg'
+import { useNavigate } from 'react-router-dom';
+import logo from './slike/logo.jpeg';
 
 const LandingPage = () => {
-  const navigate = useNavigate();  // Korištenje useNavigate za navigaciju
+  const navigate = useNavigate();
 
   const handleLoginClick = () => {
-    navigate('/login');  // Navigacija na stranicu za prijavu
+    navigate('/login');
   };
 
   return (
-    <div style={{ backgroundColor: '#f0f8ff' }}>
-      <div style={{ paddingLeft: '50px', backgroundColor: '#f0f8ff', paddingTop:'20px' }}>
-        <h2>ime app</h2>
-      </div>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', minHeight: '100vh', padding: '50px' }}>
-        <div style={{ flex: 1, padding: '20px', textAlign: 'center' }}>
-          <h1>Dobrodošli na naš sustav</h1>
-          <p>Molimo prijavite se kako biste nastavili.</p>
-          <button
-            onClick={handleLoginClick}
-            style={{ padding: '10px 20px', fontSize: '18px', borderRadius: '5px', backgroundColor: '#0f1c30', color: '#c2c6ce', border: 'none', cursor: 'pointer' }}
-          >
-            Prijava u sustav
-          </button>
-        </div>
-        <div style={{ flex: 1, padding: '20px' }}>
-          <img 
-            src={image1} 
-            alt="Descriptive Alt Text" 
-            style={{ width: '100%', height: 'auto', borderRadius: '10px' }}
-          />
-        </div>
-      </div>
+    <div style={{ 
+      backgroundColor: '#f0f8ff', 
+      minHeight: '100vh', 
+      display: 'flex', 
+      flexDirection: 'column', 
+      justifyContent: 'center', 
+      alignItems: 'center', 
+      textAlign: 'center' 
+    }}>
+      <h2 style={{ fontSize: '30px', marginBottom: '20px', color: '#0f1c30', fontFamily: 'Poppins, sans-serif', animation: 'slideIn 1s ease-out' }}>EduScan</h2>
+      <img 
+        src={logo} 
+        alt="EduScan Logo" 
+        style={{ width: '20%', height: '20%', marginBottom: '20px',animation: 'slideIn 1s ease-out' }} 
+      />
+      <h1 style={{ fontSize: '25px',fontFamily: 'Poppins, sans-serif', marginBottom: '20px', color: '#668dc0', animation: 'slideIn 1s ease-out'}}>Dobrodošli na EduScan!</h1>
+      <p style={{ marginBottom: '20px', fontFamily: 'Poppins, sans-serif', color: '#777',animation: 'slideIn 1s ease-out' }}>Molimo prijavite se u sustav kako biste nastavili.</p>
+      <button
+        onClick={handleLoginClick}
+        style={{
+          padding: '10px 20px',
+          fontSize: '18px',
+          fontFamily: 'Poppins, sans-serif',
+          fontWeight: '600', 
+          borderRadius: '5px',
+          backgroundColor: '#0f1c30', // Bijela pozadina
+          color: '#668dc0', // Tekst u boji #668dc0
+          border: 'none',
+          cursor: 'pointer',
+          transition: 'background-color 0.3s ease, color 0.3s ease', // Animacija za pozadinu i boju teksta
+          animation: 'slideIn 1s ease-out'
+        }}
+        onMouseEnter={(e) => {
+          e.target.style.backgroundColor = '#668dc0'; // Pozadina mijenja boju
+          e.target.style.color = '#0f1c30'; // Tekst mijenja boju na hover
+        }}
+        onMouseLeave={(e) => {
+          e.target.style.backgroundColor = '#0f1c30'; // Bijela pozadina
+          e.target.style.color = '#668dc0'; // Povratak na početnu boju teksta
+        }}
+      >
+        PRIJAVA
+      </button>
     </div>
   );
 };
