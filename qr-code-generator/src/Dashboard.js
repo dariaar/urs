@@ -4,8 +4,10 @@ import { Link } from 'react-router-dom';  // Ispravan import za navigaciju
 const Dashboard = () => {
   return (
     <div style={{ padding: '20px' }}>
-      <h1>Dobrodošli na Dashboard</h1>
-      
+      <div style={{textAlign:'center'}}>
+      <h1>Sustav evidencije prisutnosti na nastavi</h1>
+      <h2>Odaberi predmet!</h2>
+      </div>
       <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-around', marginTop: '20px',alignItems:'center' }}>
         <Link to="/business-info-systems" style={buttonStyle}>
           Poslovni Informacijski Sustavi
@@ -24,7 +26,7 @@ const Dashboard = () => {
         </Link>
 
         <Link to="/medicinski" style={buttonStyle}>
-          Medicinski udeđaji
+          Medicinski uređaji
         </Link>
 
         <Link to="/paralelno" style={buttonStyle}>
@@ -44,6 +46,7 @@ const buttonStyle = {
   fontSize: '16px',
   textAlign: 'center',
   width: '150px',
+  marginTop:'20px',
 };
 
 export default Dashboard;
