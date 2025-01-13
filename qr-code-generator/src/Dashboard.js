@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';  // Ispravan import za navigaciju
 
 const Dashboard = () => {
   return (
-    <div style={{backgroundColor:'#668DC0', WebkitBackgroundSize:'cover' }}>
+    <div style={{backgroundColor:'#668DC0', WebkitBackgroundSize:'cover', minHeight: '100vh' }}>
     <div style={{ padding: '20px'}}>
       <div style={{textAlign:'center', WebkitTextFillColor:'#0f1c30'}}>
       <h1>Sustav evidencije prisutnosti na nastavi</h1>

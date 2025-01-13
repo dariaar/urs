@@ -9,12 +9,14 @@ import Urs from './subjects/Urs/Urs';
 import Multimedija from './subjects/Multimedija/Multimedija';
 import Medicinski from './subjects/Medicinski/Medicinski';
 import Paralelno from './subjects/Paralelno/Paralelno';
+import LandingPage from './LandingPage';
 
 const App = () => {
   return (
     <Router>
       <Routes>
-        <Route exact path="/" element={<LoginForm />} />
+      <Route path="/" element={<LandingPage />} />
+        <Route exact path="/login" element={<LoginForm />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/business-info-systems" element={<BusinessInfoSystems />} />  {/* Dodano */}
         <Route path="/grid-computer-systems" element={<Grid />} />  {/* Dodano */}
