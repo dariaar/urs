@@ -12,23 +12,23 @@ const Dashboard = () => {
         </Link>
         
         <Link to="/grid-computer-systems" style={buttonStyle}>
-          Gridski Računalni Sustavi
+          Grid Računalni Sustavi
         </Link>
 
-        <Link to="/machine-learning" style={buttonStyle}>
-          Strojno Učenje
+        <Link to="/urs" style={buttonStyle}>
+          Ugradbeni Računalni sustavi
         </Link>
 
-        <Link to="/data-science" style={buttonStyle}>
-          Znanost o Podacima
+        <Link to="/multimedija" style={buttonStyle}>
+          Multimedijski sustavi
         </Link>
 
-        <Link to="/network-security" style={buttonStyle}>
-          Sigurnost Mreže
+        <Link to="/medicinski" style={buttonStyle}>
+          Medicinski udeđaji
         </Link>
 
-        <Link to="/cloud-computing" style={buttonStyle}>
-          Računarstvo u Oblaku
+        <Link to="/paralelno" style={buttonStyle}>
+          Paralelno programiranje
         </Link>
       </div>
     </div>
