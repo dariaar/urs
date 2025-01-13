@@ -3,8 +3,9 @@ import { Link } from 'react-router-dom';  // Ispravan import za navigaciju
 
 const Dashboard = () => {
   return (
-    <div style={{ padding: '20px' }}>
-      <div style={{textAlign:'center'}}>
+    <div style={{backgroundColor:'#668DC0', WebkitBackgroundSize:'cover' }}>
+    <div style={{ padding: '20px'}}>
+      <div style={{textAlign:'center', WebkitTextFillColor:'#0f1c30'}}>
       <h1>Sustav evidencije prisutnosti na nastavi</h1>
       <h2>Odaberi predmet!</h2>
       </div>
@@ -34,13 +35,14 @@ const Dashboard = () => {
         </Link>
       </div>
     </div>
+    </div>
   );
 };
 
 const buttonStyle = {
   padding: '10px 20px',
-  backgroundColor: '#007bff',
-  color: 'white',
+  backgroundColor: '#304a6e',
+  color: '#c2c6ce',
   textDecoration: 'none',
   borderRadius: '5px',
   fontSize: '16px',
