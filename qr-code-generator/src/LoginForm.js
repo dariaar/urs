@@ -1,28 +1,28 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Ispravan import za navigaciju
+import { useNavigate } from 'react-router-dom'; 
 
 const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isHovered, setIsHovered] = useState(false); // Praćenje hover stanja
-  const navigate = useNavigate(); // Korištenje useNavigate
-
+  const [isHovered, setIsHovered] = useState(false); 
+  const navigate = useNavigate(); 
   const handleSubmit = (e) => {
-    e.preventDefault(); // Sprječavanje osnovnog ponašanja forme (osvježavanje stranice)
+    e.preventDefault(); 
     console.log(`Email: ${email}, Password: ${password}`);
-    navigate('/dashboard'); // Prijeusmjeravanje na dashboard
+    navigate('/dashboard'); 
   };
 
   const buttonStyle = {
     padding: '10px 20px',
     fontSize: '16px',
+    fontWeight: '600',
     borderRadius: 5,
-    backgroundColor: isHovered ? '#5578A3' : '#0f1c30', // Promjena boje pri hoveru
-    color: isHovered ? '#ffffff' : '#c2c6ce', // Promjena boje teksta
+    backgroundColor: isHovered ? '#668dc0' : '#0f1c30', // Promjena boje pri hoveru
+    color: isHovered ? '#0f1c30' : '#668dc0', // Promjena boje teksta
     border: 'none',
     cursor: 'pointer',
-    transition: 'background-color 0.5s, color 0.5s', // Glatka tranzicija
-    fontFamily: 'Poppins, sans-serif'
+    transition: 'background-color 0.5s, color 0.5s', 
+    fontFamily: 'Poppins, sans-serif',
   };
 
   return (
@@ -50,7 +50,7 @@ const LoginForm = () => {
                 fontSize: '16px',
                 borderRadius: 5,
                 border: '1px solid #ccc',
-                backgroundColor: '#fff'
+                backgroundColor: '#fff',
               }}
             />
           </div>
