@@ -1,0 +1,26 @@
+{
+  "scripts": {
+    "start": "react-scripts start"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "dependencies": {
+    "firebase": "^11.2.0",
+    "html5-qrcode": "^2.3.8",
+    "qrcode.react": "^4.2.0",
+    "react-router-dom": "^7.1.2",
+    "react-scripts": "^5.0.1",
+    "typescript": "^5.7.3",
+    "web-vitals": "^4.2.4"
+  }
+}

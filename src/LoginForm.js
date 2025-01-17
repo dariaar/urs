@@ -1,15 +1,27 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; 
+import { auth, signInWithEmailAndPassword } from './firebase-config'; // Uvoz Firebase funkcionalnosti
+import { signInWithEmailAndPassword } from 'firebase/auth'; // Firebase Auth za prijavu korisnika
 
 const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isHovered, setIsHovered] = useState(false); 
+  const [error, setError] = useState(null); // Držimo stanje za greške
   const navigate = useNavigate(); 
-  const handleSubmit = (e) => {
+
+  const handleSubmit = async (e) => {
     e.preventDefault(); 
     console.log(`Email: ${email}, Password: ${password}`);
-    navigate('/dashboard'); 
+    try {
+      // Pokušavamo prijaviti korisnika s emailom i lozinkom
+      await signInWithEmailAndPassword(auth, email, password);
+      console.log("Uspješna prijava!");
+      navigate('/dashboard');  // Nakon uspješne prijave, preusmjeri na dashboard
+    } catch (error) {
+      setError("Neispravan email ili lozinka");  // Ako dođe do greške, postavi poruku
+      console.error(error.message);  // Ispis greške u konzoli
+    }
   };
 
   const buttonStyle = {
@@ -37,6 +49,7 @@ const LoginForm = () => {
     >
       <div style={{ textAlign: 'center', width: '100%', maxWidth: '400px', padding: '20px', backgroundColor: '#f0f8ff', borderRadius: '10px', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
         <h1 style={{ color: '#0f1c30', marginBottom: '20px',fontFamily: 'Poppins, sans-serif' }}>Student Login</h1>
+        {error && <p style={{ color: 'red', fontSize: '14px' }}>{error}</p>} {/* Ispisivanje greške */}
         <form onSubmit={handleSubmit}>
           <div style={{ margin: '10px 0' }}>
             <label style={{ display: 'block', marginBottom: '5px', color: '#333',fontFamily: 'Poppins, sans-serif' }}>Email:</label>
