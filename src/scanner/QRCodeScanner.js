@@ -1,34 +1,45 @@
-import React, { useState } from "react";
-import QRScanner from "react-qr-scanner";
+import React, { useEffect, useRef, useState } from "react";
+import { Html5QrcodeScanner } from "html5-qrcode";
 
 const QRCodeScanner = () => {
   const [data, setData] = useState("");
+  const scannerRef = useRef(null); // reference for the scanner container
 
-  // Funkcija koja se poziva kad se QR kod uspješno skenira
-  const handleScan = (scanData) => {
-    if (scanData) {
-      setData(scanData.text); // Spremi pročitane podatke u state
+  useEffect(() => {
+    // Provjeri da je scannerRef referenca na pravi DOM element
+    if (scannerRef.current) {
+      const scanner = new Html5QrcodeScanner(scannerRef.current, {
+        fps: 10, // Frames per second
+        qrbox: 250, // Velicina okvira za skeniranje
+      });
+
+      // Pokreni skener
+      scanner.render(onScanSuccess, onScanError);
+
+      // Cleanup funkcija koja zaustavlja skener pri unmountu
+      return () => {
+        scanner.clear();
+      };
     }
-  };
+  }, []); // Prazni array osigurava da se useEffect pokreće samo jednom kad je komponenta mountana
 
-  // Funkcija koja se poziva u slučaju pogreške pri skeniranju
-  const handleError = (error) => {
+  // Funkcija koja se poziva pri uspješnom skeniranju
+  function onScanSuccess(decodedText, decodedResult) {
+    setData(decodedText); // Postavlja pročitane podatke u stanje
+  }
+
+  // Funkcija koja se poziva ako dođe do greške pri skeniranju
+  function onScanError(error) {
     console.error(error);
-  };
+  }
 
   return (
     <div>
       <h1>QR Scanner</h1>
-      <QRScanner
-        delay={300} // Kašnjenje između snimanja okvira (u milisekundama)
-        onScan={handleScan} // Poziva se kad QR kod bude skeniran
-        onError={handleError} // Poziva se ako dođe do pogreške pri skeniranju
-        style={{ width: "100%" }} // Stiliziraj skener
-      />
+      <div ref={scannerRef} style={{ width: "100%", height: "100%" }}></div>
       <div>
         <h3>Pročitani podaci:</h3>
-        <p>{data ? data : "Nema podataka"}</p>{" "}
-        {/* Prikazuje pročitane podatke */}
+        <p>{data ? data : "Nema podataka"}</p>
       </div>
     </div>
   );
