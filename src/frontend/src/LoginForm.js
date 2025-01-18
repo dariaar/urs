@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'; 
 import { auth, signInWithEmailAndPassword } from './firebase-config'; // Uvoz Firebase funkcionalnosti
-//import { auth } from './firebase-config';
+import { onAuthStateChanged, setPersistence, browserLocalPersistence } from 'firebase/auth'; // Uvoz funkcija za praćenje prijave
 
 const LoginForm = () => {
   const [email, setEmail] = useState('');
@@ -9,6 +9,20 @@ const LoginForm = () => {
   const [isHovered, setIsHovered] = useState(false); 
   const [error, setError] = useState(null); // Držimo stanje za greške
   const navigate = useNavigate(); 
+
+  useEffect(() => {
+    // Postavljanje Firebase persistence na 'local' kako bi podaci bili pohranjeni trajno
+    setPersistence(auth, browserLocalPersistence)
+      .then(() => {
+        // Praćenje prijavljenog korisnika
+        onAuthStateChanged(auth, (user) => {
+          if (user) {
+            navigate('/dashboard'); // Ako je korisnik prijavljen, preusmjeri na dashboard
+          }
+        });
+      })
+      .catch((error) => console.error(error.message));
+  }, [navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault(); 

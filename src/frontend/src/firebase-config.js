@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { getAuth, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 
 // Vaša Firebase konfiguracija
 const firebaseConfig = {
@@ -10,10 +10,10 @@ const firebaseConfig = {
     storageBucket: "qrcode-63444.firebasestorage.app",
     messagingSenderId: "288016518567",
     appId: "1:288016518567:web:7f019a353e7a81289c7a82"
-  };
+};
 
 // Inicijalizacija Firebase aplikacije
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-export { auth, signInWithEmailAndPassword };
+export { auth, signInWithEmailAndPassword, signOut };

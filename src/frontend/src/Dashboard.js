@@ -1,8 +1,23 @@
-import { Link } from 'react-router-dom'; // Ispravan import za navigaciju
+import { Link, useNavigate } from 'react-router-dom'; // Dodan useNavigate za navigaciju
 import React, { useState } from 'react';
+import { signOut } from 'firebase/auth';
+import { auth } from './firebase-config';
 
 const Dashboard = () => {
   const [hoveredLink, setHoveredLink] = useState(null); // Praćenje hover stanja za svaki link
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    signOut(auth)  // Firebase logout
+      .then(() => {
+        console.log('Odjava uspješna!');
+        localStorage.removeItem('user');  // Uklanjanje podataka iz localStorage
+        navigate('/login');  // Preusmjeravanje na login stranicu
+      })
+      .catch((error) => {
+        console.error('Greška prilikom odjave:', error);  // Obrađivanje greške
+      });
+  };
 
   const getButtonStyle = (link) => ({
     padding: '10px 20px',
@@ -21,7 +36,7 @@ const Dashboard = () => {
   return (
     <div
       style={{
-        backgroundColor: '#668DC0',
+        backgroundColor: '#F0F8FF',
         WebkitBackgroundSize: 'cover',
         minHeight: '100vh',
       }}
@@ -58,6 +73,32 @@ const Dashboard = () => {
               {link.label}
             </Link>
           ))}
+        </div>
+        <div style={{ textAlign: 'center', marginTop: '30px' }}>
+          <button
+            onClick={handleLogout}
+            style={{
+              padding: '10px 20px',
+              backgroundColor: '#0f1c30',
+              color: '#668dc0',
+              borderRadius: '5px',
+              fontSize: '16px',
+              border: 'none',
+              cursor: 'pointer',
+              transition: 'background-color 0.3s ease, color 0.3s ease',
+              
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.backgroundColor = '#668dc0'; // Pozadina mijenja boju
+              e.target.style.color = '#0f1c30'; // Tekst mijenja boju na hover
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.backgroundColor = '#0f1c30'; // Bijela pozadina
+              e.target.style.color = '#668dc0'; // Povratak na početnu boju teksta
+            }}
+          >
+            Odjava
+          </button>
         </div>
       </div>
     </div>
