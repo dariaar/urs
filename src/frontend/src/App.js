@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import { getAuth, onAuthStateChanged, setPersistence, browserLocalPersistence } from "firebase/auth"; // Firebase import
-
+import { getAuth, onAuthStateChanged, setPersistence, browserLocalPersistence } from "firebase/auth";
+import LoadingPage from './LoadingPage';
 import LandingPage from "./LandingPage";
 import LoginForm from "./LoginForm";
 import Dashboard from "./Dashboard";
@@ -18,32 +18,24 @@ setPersistence(authInstance, browserLocalPersistence);
 
 const App = () => {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true); // Dodano stanje za praćenje učitavanja
 
   useEffect(() => {
-    const storedUser = localStorage.getItem('user');
-    console.log('Dohvaćeni korisnik iz localStorage:', storedUser);
-
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
-
     const unsubscribe = onAuthStateChanged(authInstance, (currentUser) => {
-      console.log('Trenutni korisnik:', currentUser); // Provjeri što Firebase vraća
-
       if (currentUser) {
         setUser(currentUser);
-        localStorage.setItem('user', JSON.stringify(currentUser));
       } else {
         setUser(null);
-        localStorage.removeItem('user');
       }
+      setLoading(false); // Uklanjanje učitavanja nakon što je stanje korisnika postavljeno
     });
 
     return () => unsubscribe();
-}, []);
+  }, []);
 
-
-  
+  if (loading) {
+    return <LoadingPage />;
+  }
 
   return (
     <Router>
