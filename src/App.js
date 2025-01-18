@@ -1,18 +1,55 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Html5QrcodePlugin from "./scanner/Html5QrcodePlugin"; // Importiranje Html5QrcodePlugin
 
 import LoginForm from "./LoginForm";
 import Dashboard from "./Dashboard";
-import BusinessInfoSystems from "./frontend/subjects/BusinessInfoSystems/BusinessInfoSystems";
-import Grid from "./frontend/subjects/Grid/Grid";
-import Urs from "./frontend/subjects/Urs/Urs";
-import Multimedija from "./frontend/subjects/Multimedija/Multimedija";
-import Medicinski from "./frontend/subjects/Medicinski/Medicinski";
-import Paralelno from "./frontend/subjects/Paralelno/Paralelno";
+import BusinessInfoSystems from "./subjects/BusinessInfoSystems/BusinessInfoSystems";
+import Grid from "./subjects/Grid/Grid";
+import Urs from "./subjects/Urs/Urs";
+import Multimedija from "./subjects/Multimedija/Multimedija";
+import Medicinski from "./subjects/Medicinski/Medicinski";
+import Paralelno from "./subjects/Paralelno/Paralelno";
 import LandingPage from "./LandingPage";
-import QRCodeScanner from "./frontend/scanner/QRCodeScanner";
 
+// QR kod skener komponenta
+const QRCodeScanner = ({ onNewScanResult, scanData }) => {
+  useEffect(() => {
+    // Cleanup funkcija za zaustavljanje kamere pri demontiranju
+    return () => {
+      console.log("QR Scanner component unmounted");
+    };
+  }, []);
+
+  return (
+    <div>
+      <h1>QR Scanner</h1>
+      <Html5QrcodePlugin
+        fps={10}
+        qrbox={250}
+        disableFlip={false}
+        qrCodeSuccessCallback={onNewScanResult} // Callback za uspješan rezultat
+        qrCodeErrorCallback={(error) => console.error("QR Error: ", error)} // Callback za greške
+      />
+      <div>
+        <h3>Pročitani podaci:</h3>
+        <p>{scanData ? scanData : "Nema podataka"}</p>
+      </div>
+    </div>
+  );
+};
+
+// App komponenta
 const App = () => {
+  // Stanje za pohranu skeniranih podataka
+  const [scanData, setScanData] = useState("");
+
+  // Callback funkcija koja obrađuje rezultate skeniranja
+  const onNewScanResult = (decodedText, decodedResult) => {
+    setScanData(decodedText); // Postavlja pročitane podatke u stanje
+    console.log("Decoded text: ", decodedText); // Ispisuje podatke iz QR koda
+  };
+
   return (
     <Router>
       <Routes>
@@ -22,47 +59,26 @@ const App = () => {
         <Route
           path="/business-info-systems"
           element={<BusinessInfoSystems />}
-        />{" "}
-        {/* Dodano */}
-        <Route path="/grid-computer-systems" element={<Grid />} />{" "}
-        {/* Dodano */}
-        <Route path="/urs" element={<Urs />} /> {/* Dodano */}
-        <Route path="/multimedija" element={<Multimedija />} /> {/* Dodano */}
-        <Route path="/medicinski" element={<Medicinski />} /> {/* Dodano */}
-        <Route path="/paralelno" element={<Paralelno />} /> {/* Dodano */}
-        <Route path="/scanner" element={<QRCodeScanner />} /> {/* Dodano */}
+        />
+        <Route path="/grid-computer-systems" element={<Grid />} />
+        <Route path="/urs" element={<Urs />} />
+        <Route path="/multimedija" element={<Multimedija />} />
+        <Route path="/medicinski" element={<Medicinski />} />
+        <Route path="/paralelno" element={<Paralelno />} />
+
+        {/* Glavna ruta sa QR skenerom */}
+        <Route
+          path="/scanner"
+          element={
+            <QRCodeScanner
+              onNewScanResult={onNewScanResult}
+              scanData={scanData}
+            />
+          }
+        />
       </Routes>
     </Router>
   );
 };
 
 export default App;
-
-
-/*
-// src/App.jsx
-import React from "react";
-import Html5QrcodePlugin from "./scanner/Html5QrcodePlugin";
-
-const App = () => {
-  // Callback funkcija koja obrađuje rezultate skeniranja
-  const onNewScanResult = (decodedText, decodedResult) => {
-    console.log("Decoded text: ", decodedText); // Ispisuje podatke iz QR koda
-  };
-
-  return (
-    <div className="App">
-      <h1>QR Scanner</h1>
-      <Html5QrcodePlugin
-        fps={10} // Frames per second
-        qrbox={250} // Veličina okvira za skeniranje
-        disableFlip={false} // Omogućava ili onemogućava flip kamere
-        qrCodeSuccessCallback={onNewScanResult} // Callback za uspješan rezultat
-        qrCodeErrorCallback={(error) => console.error("QR Error: ", error)} // Callback za greške
-      />
-    </div>
-  );
-};
-
-export default App;
-*/
