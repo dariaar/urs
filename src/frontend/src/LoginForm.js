@@ -1,40 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; 
-import { auth, signInWithEmailAndPassword } from './firebase-config'; // Uvoz Firebase funkcionalnosti
-import { onAuthStateChanged, setPersistence, browserLocalPersistence } from 'firebase/auth'; // Uvoz funkcija za praćenje prijave
+import { auth, signInWithEmailAndPassword } from './firebase-config'; 
+import { setPersistence, browserLocalPersistence } from 'firebase/auth'; 
 
 const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isHovered, setIsHovered] = useState(false); 
-  const [error, setError] = useState(null); // Držimo stanje za greške
+  const [error, setError] = useState(null); 
   const navigate = useNavigate(); 
-
-  useEffect(() => {
-    // Postavljanje Firebase persistence na 'local' kako bi podaci bili pohranjeni trajno
-    setPersistence(auth, browserLocalPersistence)
-      .then(() => {
-        // Praćenje prijavljenog korisnika
-        onAuthStateChanged(auth, (user) => {
-          if (user) {
-            navigate('/dashboard'); // Ako je korisnik prijavljen, preusmjeri na dashboard
-          }
-        });
-      })
-      .catch((error) => console.error(error.message));
-  }, [navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault(); 
-    console.log(`Email: ${email}, Password: ${password}`);
     try {
-      // Pokušavamo prijaviti korisnika s emailom i lozinkom
       await signInWithEmailAndPassword(auth, email, password);
-      console.log("Uspješna prijava!");
-      navigate('/dashboard');  // Nakon uspješne prijave, preusmjeri na dashboard
+      navigate('/dashboard');  
     } catch (error) {
-      setError("Neispravan email ili lozinka");  // Ako dođe do greške, postavi poruku
-      console.error(error.message);  // Ispis greške u konzoli
+      setError("Neispravan email ili lozinka");
+      console.error(error.message);
     }
   };
 
@@ -43,11 +26,11 @@ const LoginForm = () => {
     fontSize: '16px',
     fontWeight: '600',
     borderRadius: 5,
-    backgroundColor: isHovered ? '#668dc0' : '#0f1c30', // Promjena boje pri hoveru
-    color: isHovered ? '#0f1c30' : '#668dc0', // Promjena boje teksta
+    backgroundColor: isHovered ? '#668dc0' : '#0f1c30',
+    color: isHovered ? '#0f1c30' : '#668dc0',
     border: 'none',
     cursor: 'pointer',
-    transition: 'background-color 0.5s, color 0.5s', 
+    transition: 'background-color 0.5s, color 0.5s',
     fontFamily: 'Poppins, sans-serif',
   };
 
@@ -62,11 +45,11 @@ const LoginForm = () => {
       }}
     >
       <div style={{ textAlign: 'center', width: '100%', maxWidth: '400px', padding: '20px', backgroundColor: '#f0f8ff', borderRadius: '10px', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
-        <h1 style={{ color: '#0f1c30', marginBottom: '20px',fontFamily: 'Poppins, sans-serif' }}>Student Login</h1>
-        {error && <p style={{ color: 'red', fontSize: '14px' }}>{error}</p>} {/* Ispisivanje greške */}
+        <h1 style={{ color: '#0f1c30', marginBottom: '20px', fontFamily: 'Poppins, sans-serif' }}>Student Login</h1>
+        {error && <p style={{ color: 'red', fontSize: '14px' }}>{error}</p>}
         <form onSubmit={handleSubmit}>
           <div style={{ margin: '10px 0' }}>
-            <label style={{ display: 'block', marginBottom: '5px', color: '#333',fontFamily: 'Poppins, sans-serif' }}>Email:</label>
+            <label style={{ display: 'block', marginBottom: '5px', color: '#333', fontFamily: 'Poppins, sans-serif' }}>Email:</label>
             <input
               type="email"
               value={email}
@@ -82,7 +65,7 @@ const LoginForm = () => {
             />
           </div>
           <div style={{ margin: '10px 0' }}>
-            <label style={{ display: 'block', marginBottom: '5px', color: '#333', fontFamily: 'Poppins, sans-serif'}}>Password:</label>
+            <label style={{ display: 'block', marginBottom: '5px', color: '#333', fontFamily: 'Poppins, sans-serif' }}>Password:</label>
             <input
               type="password"
               value={password}
@@ -93,7 +76,7 @@ const LoginForm = () => {
                 fontSize: '16px',
                 borderRadius: 5,
                 border: '1px solid #ccc',
-                backgroundColor: '#fff'
+                backgroundColor: '#fff',
               }}
             />
           </div>
