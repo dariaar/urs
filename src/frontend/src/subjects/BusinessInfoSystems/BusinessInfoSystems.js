@@ -23,7 +23,7 @@ const BusinessInfoSystems = () => {
             setStudentInfo({
               name: studentData.name || 'Nepoznato ime',
               surname: studentData.surname || 'Nepoznato prezime',
-              timestamp: new Date().toISOString(),
+              timestamp: new Date().toLocaleString('hr-HR', { timeZone: 'Europe/Zagreb' }),
             });
           } else {
             console.error('Nema podataka za dani email.');
@@ -52,13 +52,35 @@ const BusinessInfoSystems = () => {
   const qrContent = `Name: ${studentInfo.name}, Prezime: ${studentInfo.surname}, Timestamp: ${studentInfo.timestamp}`;
 
   return (
-    <div>
-      <h2>Poslovni Informacijski Sustavi</h2>
+    <div
+    style={{
+      backgroundColor: '#F0F8FF', // Pozadina stranice usklađena s Dashboardom
+      WebkitBackgroundSize: 'cover',
+      minHeight: '100vh',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: '20px',
+    }}
+  >
+    <h2 style={{ fontFamily: 'sans-serif', color: '#0f1c30', WebkitTextFillColor:'#0f1c30' }}>Poslovni informacijski sustavi</h2>
+    <div
+      style={{
+        backgroundColor: '#FFFFFF', // Bijela pozadina za QR kod
+        padding: '20px',
+        borderRadius: '10px',
+        boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
+      }}
+    >
       <QRCodeCanvas value={qrContent} size={256} />
-      <p>Ime: {studentInfo.name}</p>
-      <p>Prezime: {studentInfo.surname}</p>
-      <p>Vrijeme: {studentInfo.timestamp}</p>
     </div>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px' }}>
+      <p style={{ fontFamily: 'sans-serif', fontWeight: 'bold',  WebkitTextFillColor:'#0f1c30' }}>Ime: <span style={{ fontWeight: 'normal', WebkitTextFillColor:'#1a2a40' }}>{studentInfo.name}</span></p>
+      <p style={{ fontFamily: 'sans-serif', fontWeight: 'bold',  WebkitTextFillColor:'#0f1c30' }}>Prezime: <span style={{ fontWeight: 'normal', WebkitTextFillColor:'#1a2a40' }}>{studentInfo.surname}</span></p>
+      <p style={{ fontFamily: 'sans-serif', fontWeight: 'bold',  WebkitTextFillColor:'#0f1c30' }}>Vrijeme: <span style={{ fontWeight: 'normal', WebkitTextFillColor:'#1a2a40' }}>{studentInfo.timestamp}</span></p>
+    </div>
+  </div>
   );
 };
 
