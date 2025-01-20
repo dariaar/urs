@@ -11,7 +11,7 @@ import Urs from "./subjects/Urs/Urs";
 import Multimedija from "./subjects/Multimedija/Multimedija";
 import Medicinski from "./subjects/Medicinski/Medicinski";
 import Paralelno from "./subjects/Paralelno/Paralelno";
-import QRCodeScanner from "./scanner/QRCodeScanner";
+
 
 const authInstance = getAuth();
 setPersistence(authInstance, browserLocalPersistence);
@@ -49,7 +49,7 @@ const App = () => {
         <Route path="/multimedija" element={user ? <Multimedija /> : <Navigate to="/login" />} />
         <Route path="/medicinski" element={user ? <Medicinski /> : <Navigate to="/login" />} />
         <Route path="/paralelno" element={user ? <Paralelno /> : <Navigate to="/login" />} />
-        <Route path="/scanner" element={user ? <QRCodeScanner /> : <Navigate to="/login" />} />
+       
       </Routes>
     </Router>
   );
