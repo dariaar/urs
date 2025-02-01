@@ -49,7 +49,7 @@ const Multimedija = () => {
     return <p>Podaci nisu dostupni.</p>; // Prikaz ako nema podataka
   }
 
-  const qrContent = `Name: ${studentInfo.name}, Prezime: ${studentInfo.surname}, Timestamp: ${studentInfo.timestamp}`;
+  const qrContent = `Name: ${studentInfo.name}, Prezime: ${studentInfo.surname}, Timestamp: ${studentInfo.timestamp}, Predmet: Multimedijski sustavi`;
 
   return (
     <div
@@ -79,6 +79,7 @@ const Multimedija = () => {
         <p style={{ fontFamily: 'sans-serif', fontWeight: 'bold',  WebkitTextFillColor:'#0f1c30' }}>Ime: <span style={{ fontWeight: 'normal', WebkitTextFillColor:'#1a2a40' }}>{studentInfo.name}</span></p>
         <p style={{ fontFamily: 'sans-serif', fontWeight: 'bold',  WebkitTextFillColor:'#0f1c30' }}>Prezime: <span style={{ fontWeight: 'normal', WebkitTextFillColor:'#1a2a40' }}>{studentInfo.surname}</span></p>
         <p style={{ fontFamily: 'sans-serif', fontWeight: 'bold',  WebkitTextFillColor:'#0f1c30' }}>Vrijeme: <span style={{ fontWeight: 'normal', WebkitTextFillColor:'#1a2a40' }}>{studentInfo.timestamp}</span></p>
+       
       </div>
     </div>
   );
