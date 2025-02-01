@@ -49,7 +49,7 @@ const Paralelno = () => {
     return <p>Podaci nisu dostupni.</p>; // Prikaz ako nema podataka
   }
 
-  const qrContent = `Name: ${studentInfo.name}, Prezime: ${studentInfo.surname}, Timestamp: ${studentInfo.timestamp}`;
+  const qrContent = `Ime: ${studentInfo.name}, Prezime: ${studentInfo.surname}, Timestamp: ${studentInfo.timestamp}, Predmet: Paralelno programiranje`;
 
   return (
     <div
