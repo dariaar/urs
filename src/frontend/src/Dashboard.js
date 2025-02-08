@@ -74,6 +74,28 @@ const Dashboard = () => {
             </Link>
           ))}
         </div>
+        <div style={{ textAlign: 'center', marginTop: '20px' }}>
+  <button
+    onClick={() => navigate('/analitika')}
+    style={{
+      padding: '10px 20px',
+      backgroundColor: hoveredLink === 'analytics' ? '#668dc0' : '#304a6e',
+      color: hoveredLink === 'analytics' ? '#f0f8ff' : '#c2c6ce',
+      borderRadius: '5px',
+      fontSize: '16px',
+      border: hoveredLink === 'analytics' ? '2px solid #f0f8ff' : '2px solid transparent',
+      cursor: 'pointer',
+      width: '250px',
+      marginTop: '20px',
+      transition: 'background-color 0.5s, color 0.5s'
+    }}
+    onMouseEnter={() => setHoveredLink('analytics')}
+    onMouseLeave={() => setHoveredLink(null)}
+  >
+    Analitika prisutnosti
+  </button>
+</div>
+
         <div style={{ textAlign: 'center', marginTop: '30px' }}>
           <button
             onClick={handleLogout}

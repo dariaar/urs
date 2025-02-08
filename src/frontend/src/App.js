@@ -22,6 +22,7 @@ import Urs from "./subjects/Urs/Urs";
 import Multimedija from "./subjects/Multimedija/Multimedija";
 import Medicinski from "./subjects/Medicinski/Medicinski";
 import Paralelno from "./subjects/Paralelno/Paralelno";
+import Analitika from "./analitika";
 
 
 // Firebase konfiguracija
@@ -64,6 +65,7 @@ const App = () => {
         <Route path="/multimedija" element={user ? <Multimedija /> : <Navigate to="/login" />} />
         <Route path="/medicinski" element={user ? <Medicinski /> : <Navigate to="/login" />} />
         <Route path="/paralelno" element={user ? <Paralelno /> : <Navigate to="/login" />} />
+        <Route path="/analitika" element={user ? <Analitika /> : <Navigate to="/analitika" />} />
   
       </Routes>
     </Router>
