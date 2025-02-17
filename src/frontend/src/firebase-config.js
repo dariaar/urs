@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
-
+import { getFirestore } from "firebase/firestore";
 // Vaša Firebase konfiguracija
 const firebaseConfig = {
   apiKey: "AIzaSyCM9ESQyuSKzuDMV_vQ0vA9keoHjfEQOkU",
@@ -16,5 +16,6 @@ const firebaseConfig = {
 // Inicijalizacija Firebase aplikacije
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getFirestore(app);
 
-export { auth };
+export { auth,db };

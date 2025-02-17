@@ -3,21 +3,49 @@ import { useNavigate } from "react-router-dom";
 import { auth } from "./firebase-config";
 import { signInWithEmailAndPassword } from "firebase/auth";
 
-const LoginForm = () => {
+const LoginProf = ({ setLoggedInProfessor }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isHovered, setIsHovered] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
+  // Funkcija za navigaciju na predmetnu stranicu ovisno o emailu profesora
+  const navigateToSubject = (email) => {
+    switch (email) {
+      case "prof1@fesb.com":
+        navigate("/grid");
+        break;
+      case "prof2@fesb.com":
+        navigate("/multimedija");
+        break;
+      case "prof3@fesb.com":
+        navigate("/poslovni");
+        break;
+      case "prof4@fesb.com":
+        navigate("/ugradbeni");
+        break;
+      case "prof5@fesb.com":
+        navigate("/medicinski");
+        break;
+      case "prof6@fesb.com":
+        navigate("/paralelno");
+        break;
+      default:
+        navigate("/report"); // Ako email nije prepoznat, odvede ga na generički izvještaj
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      // Provjera prijave sa Firebaseom
       await signInWithEmailAndPassword(auth, email, password);
-      navigate("/dashboard");
+      setLoggedInProfessor(email); // Spremanje prijavljenog profesora u roditeljsku komponentu
+      navigateToSubject(email); // Navigacija na odgovarajući predmet prema emailu
     } catch (error) {
       setError("Neispravan email ili lozinka");
-      console.error(earror.message);
+      console.error(error.message);
     }
   };
 
@@ -62,7 +90,7 @@ const LoginForm = () => {
             fontFamily: "Poppins, sans-serif",
           }}
         >
-          Student Login
+          Professor Login
         </h1>
         {error && <p style={{ color: "red", fontSize: "14px" }}>{error}</p>}
         <form onSubmit={handleSubmit}>
@@ -132,4 +160,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default LoginProf;
