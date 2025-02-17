@@ -14,22 +14,22 @@ const LoginProf = ({ setLoggedInProfessor }) => {
   const navigateToSubject = (email) => {
     switch (email) {
       case "prof1@fesb.com":
-        navigate("/grid");
+        navigate("/gridreport");
         break;
       case "prof2@fesb.com":
-        navigate("/multimedija");
+        navigate("/multimedijareport");
         break;
       case "prof3@fesb.com":
-        navigate("/poslovni");
+        navigate("/poslovnireport");
         break;
       case "prof4@fesb.com":
-        navigate("/ugradbeni");
+        navigate("/ugradbenireport");
         break;
       case "prof5@fesb.com":
-        navigate("/medicinski");
+        navigate("/medicinskireport");
         break;
       case "prof6@fesb.com":
-        navigate("/paralelno");
+        navigate("/paralelnoreport");
         break;
       default:
         navigate("/report"); // Ako email nije prepoznat, odvede ga na generički izvještaj

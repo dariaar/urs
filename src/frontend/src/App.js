@@ -26,8 +26,13 @@ import Paralelno from "./subjects/Paralelno/Paralelno";
 import Analitika from "./analitika";
 import AttendanceReport from "./AttendanceReport";
 import GridPage from "./GridPage";  // Importiraj GridAttendanceReport
-
+import MultimedijaPage from "./MultimedijaPage"; 
+import PoslovniPage from "./PoslovniPage";
+import UgradbeniPage from "./UgradbeniPage";
+import MedicinskiPage from "./MedicinskiPage";
+import ParalelnoPage from "./ParalelnoPage";
 // Firebase konfiguracija
+
 const authInstance = getAuth();
 setPersistence(authInstance, browserLocalPersistence);
 
@@ -55,12 +60,12 @@ const App = () => {
 
   // Provjera koji predmet treba biti preusmjeren za profesora
   const emailToRoute = {
-    "prof1@fesb.com": "/grid",
-    "prof2@fesb.com": "/multimedija",
-    "prof3@fesb.com": "/poslovni",
-    "prof4@fesb.com": "/ugradbeni",
-    "prof5@fesb.com": "/medicinski",
-    "prof6@fesb.com": "/paralelno",
+    "prof1@fesb.com": "/gridreport",
+    "prof2@fesb.com": "/multimedijareport",
+    "prof3@fesb.com": "/poslovnireport",
+    "prof4@fesb.com": "/ugradbenireport",
+    "prof5@fesb.com": "/medicinskireport",
+    "prof6@fesb.com": "/paralelnoreport",
   };
 
   return (
@@ -92,8 +97,12 @@ const App = () => {
         <Route path="/analitika" element={user ? <Analitika /> : <Navigate to="/analitika" />} />
         
         {/* Nova ruta za Grid izvještaj o prisutnosti */}
-        <Route path="/grid" element={user ? <GridPage /> : <Navigate to="/login" />} />
-        
+        <Route path="/gridreport" element={user ? <GridPage /> : <Navigate to="/login" />} />
+        <Route path="/multimedijareport" element={user ? <MultimedijaPage/> : <Navigate to="/login" />} />
+        <Route path="/poslovnireport" element={user ? <PoslovniPage/> : <Navigate to="/login" />} />
+        <Route path="/ugradbenireport" element={user ? <UgradbeniPage/> : <Navigate to="/login" />} />
+        <Route path="/medicinskireport" element={user ? <MedicinskiPage/> : <Navigate to="/login" />} />
+        <Route path="/paralelnoreport" element={user ? <ParalelnoPage/> : <Navigate to="/login" />} />
         {/* Ako je profesor prijavljen, preusmjeri ga na odgovarajući predmet */}
         {user && emailToRoute[user.email] && (
           <Route path="*" element={<Navigate to={emailToRoute[user.email]} />} />
