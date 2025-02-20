@@ -6,6 +6,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 const GridPage = () => {
   const [studentsData, setStudentsData] = useState([]); // Studenti i njihova prisutnost
   const [user, setUser] = useState(null); // Trenutni korisnik
+  const [loading, setLoading] = useState(true); // Dodano za praćenje statusa učitavanja
 
   // Provjera trenutnog korisnika prilikom učitavanja komponente
   useEffect(() => {
@@ -20,25 +21,7 @@ const GridPage = () => {
     return () => unsubscribe();
   }, []);
 
-  // Provjera pristupa samo za određenog profesora
-  if (user && user.email !== 'prof1@fesb.com') {
-    return (
-      <div style={{
-        backgroundColor: '#f0f8ff',
-        minHeight: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        textAlign: 'center'
-      }}>
-        <h2 style={{ color: '#0f1c30', fontFamily: 'Poppins, sans-serif', fontSize: '24px' }}>
-          Nemate pristup ovoj stranici.
-        </h2>
-      </div>
-    );
-  }
-
-  // Učitavanje studenata i prisutnosti za fiksni predmet "Grid"
+  // Učitavanje studenata i prisutnosti za predmet "Medicinski uređaji"
   useEffect(() => {
     if (user && user.email === 'prof1@fesb.com') {
       const fetchStudents = async () => {
@@ -52,20 +35,45 @@ const GridPage = () => {
             surname: doc.data().surname,
           }));
 
-          // Učitavanje prisutnosti za predmet "Grid računalni sustavi"
+          console.log("Students List: ", studentsList); // Provjera učitanih studenata
+
+          // Učitavanje prisutnosti za predmet "Medicinski uređaji"
           const attendanceCollection = collection(db, 'class/Grid računalni sustavi/students');
           const attendanceSnapshot = await getDocs(attendanceCollection);
-          const attendanceSurnames = attendanceSnapshot.docs.map(doc => doc.id);
 
-          // Ažuriranje studenata s prisutnošću
-          const updatedStudents = studentsList.map(student => ({
-            ...student,
-            present: attendanceSurnames.includes(student.surname),
+          // Za svakog studenta provjeravamo koliko puta ima zapisani timestamp
+          const updatedStudents = await Promise.all(studentsList.map(async student => {
+            // Dohvati sve timestampove za studenta prema prezimenu
+            const studentDoc = attendanceSnapshot.docs.find(doc => doc.id === student.surname);
+
+            // Ako postoji dokument za studenta
+            if (studentDoc && studentDoc.data().timestamps) {
+              const timestamps = studentDoc.data().timestamps;
+              const attendanceCount = timestamps.length; // Broj timestampova = broj dolazaka
+
+              // Izračunavanje postotka dolazaka
+              const percentage = ((attendanceCount / 13) * 100).toFixed(2);
+
+              return {
+                ...student,
+                attendanceCount,
+                percentage,
+              };
+            }
+
+            return {
+              ...student,
+              attendanceCount: 0,
+              percentage: '0.00',
+            };
           }));
 
+          console.log("Updated Students: ", updatedStudents); // Provjera ažuriranih studenata
           setStudentsData(updatedStudents);
         } catch (error) {
           console.error('Error fetching students data:', error);
+        } finally {
+          setLoading(false); // Zatvaranje indikatora učitavanja kad su podaci učitani
         }
       };
 
@@ -84,10 +92,12 @@ const GridPage = () => {
       textAlign: 'center'
     }}>
       <h2 style={{ fontSize: '30px', color: '#0f1c30', fontFamily: 'Poppins, sans-serif' }}>
-        Izvještaj o prisutnosti
+        Izvještaj o prisutnosti - Grid računalni sustavi
       </h2>
 
-      {studentsData.length > 0 && (
+      {loading ? (
+        <div>Učitavanje podataka...</div> // Prikazuje tekst dok se podaci učitavaju
+      ) : studentsData.length > 0 ? (
         <table style={{
           width: '80%',
           marginTop: '20px',
@@ -100,7 +110,8 @@ const GridPage = () => {
           <thead>
             <tr style={{ backgroundColor: '#668dc0', color: '#fff' }}>
               <th style={{ padding: '10px', border: '1px solid #ddd' }}>Ime i prezime</th>
-              <th style={{ padding: '10px', border: '1px solid #ddd' }}>Prisutan</th>
+              <th style={{ padding: '10px', border: '1px solid #ddd' }}>Dolasci</th>
+              <th style={{ padding: '10px', border: '1px solid #ddd' }}>Postotak</th>
             </tr>
           </thead>
           <tbody>
@@ -110,16 +121,17 @@ const GridPage = () => {
                   {student.name} {student.surname}
                 </td>
                 <td style={{ padding: '10px', border: '1px solid #ddd', textAlign: 'center' }}>
-                  {student.present ? (
-                    <span style={{ color: '#0f1c30', fontWeight: '600' }}>Da</span>
-                  ) : (
-                    <span style={{ color: '#777' }}>Ne</span>
-                  )}
+                  {student.attendanceCount} / 13
+                </td>
+                <td style={{ padding: '10px', border: '1px solid #ddd', textAlign: 'center' }}>
+                  {student.percentage}%
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
+      ) : (
+        <p>Nema podataka za prikazivanje.</p>
       )}
     </div>
   );
