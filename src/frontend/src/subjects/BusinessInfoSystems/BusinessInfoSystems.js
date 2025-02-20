@@ -39,6 +39,27 @@ const BusinessInfoSystems = () => {
     };
 
     fetchStudentInfo();
+
+    // Onemogućavanje desnog klika
+    const handleContextMenu = (e) => {
+      e.preventDefault(); // Onemogućuje desni klik
+    };
+
+    // Onemogućavanje tastature za screenshotanje (npr. kombinacija tastera za snimanje ekrana)
+    const handleKeyDown = (e) => {
+      if (e.key === 'PrintScreen') {
+        e.preventDefault(); // Onemogućuje PrintScreen tipku
+      }
+    };
+
+    document.addEventListener('contextmenu', handleContextMenu);
+    document.addEventListener('keydown', handleKeyDown);
+
+    // Čišćenje event listenera kada se komponenta unmounta
+    return () => {
+      document.removeEventListener('contextmenu', handleContextMenu);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
   }, []);
 
   if (isLoading) {
@@ -53,34 +74,34 @@ const BusinessInfoSystems = () => {
 
   return (
     <div
-    style={{
-      backgroundColor: '#F0F8FF', // Pozadina stranice usklađena s Dashboardom
-      WebkitBackgroundSize: 'cover',
-      minHeight: '100vh',
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      padding: '20px',
-    }}
-  >
-    <h2 style={{ fontFamily: 'sans-serif', color: '#0f1c30', WebkitTextFillColor:'#0f1c30' }}>Poslovni informacijski sustavi</h2>
-    <div
       style={{
-        backgroundColor: '#FFFFFF', // Bijela pozadina za QR kod
+        backgroundColor: '#F0F8FF', // Pozadina stranice usklađena s Dashboardom
+        WebkitBackgroundSize: 'cover',
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
         padding: '20px',
-        borderRadius: '10px',
-        boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
       }}
     >
-      <QRCodeCanvas value={qrContent} size={256} />
+      <h2 style={{ fontFamily: 'sans-serif', color: '#0f1c30', WebkitTextFillColor:'#0f1c30' }}>Poslovni informacijski sustavi</h2>
+      <div
+        style={{
+          backgroundColor: '#FFFFFF', // Bijela pozadina za QR kod
+          padding: '20px',
+          borderRadius: '10px',
+          boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
+        }}
+      >
+        <QRCodeCanvas value={qrContent} size={256} />
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px' }}>
+        <p style={{ fontFamily: 'sans-serif', fontWeight: 'bold', WebkitTextFillColor:'#0f1c30' }}>Ime: <span style={{ fontWeight: 'normal', WebkitTextFillColor:'#1a2a40' }}>{studentInfo.name}</span></p>
+        <p style={{ fontFamily: 'sans-serif', fontWeight: 'bold', WebkitTextFillColor:'#0f1c30' }}>Prezime: <span style={{ fontWeight: 'normal', WebkitTextFillColor:'#1a2a40' }}>{studentInfo.surname}</span></p>
+        <p style={{ fontFamily: 'sans-serif', fontWeight: 'bold', WebkitTextFillColor:'#0f1c30' }}>Vrijeme: <span style={{ fontWeight: 'normal', WebkitTextFillColor:'#1a2a40' }}>{studentInfo.timestamp}</span></p>
+      </div>
     </div>
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px' }}>
-      <p style={{ fontFamily: 'sans-serif', fontWeight: 'bold',  WebkitTextFillColor:'#0f1c30' }}>Ime: <span style={{ fontWeight: 'normal', WebkitTextFillColor:'#1a2a40' }}>{studentInfo.name}</span></p>
-      <p style={{ fontFamily: 'sans-serif', fontWeight: 'bold',  WebkitTextFillColor:'#0f1c30' }}>Prezime: <span style={{ fontWeight: 'normal', WebkitTextFillColor:'#1a2a40' }}>{studentInfo.surname}</span></p>
-      <p style={{ fontFamily: 'sans-serif', fontWeight: 'bold',  WebkitTextFillColor:'#0f1c30' }}>Vrijeme: <span style={{ fontWeight: 'normal', WebkitTextFillColor:'#1a2a40' }}>{studentInfo.timestamp}</span></p>
-    </div>
-  </div>
   );
 };
 
