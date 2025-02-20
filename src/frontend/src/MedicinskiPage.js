@@ -40,14 +40,32 @@ const MedicinskiPage = () => {
           // Učitavanje prisutnosti za predmet "Medicinski uređaji"
           const attendanceCollection = collection(db, 'class/Medicinski uređaji/students');
           const attendanceSnapshot = await getDocs(attendanceCollection);
-          const attendanceSurnames = attendanceSnapshot.docs.map(doc => doc.id);
 
-          console.log("Attendance Surnames: ", attendanceSurnames); // Provjera učitane prisutnosti
+          // Za svakog studenta provjeravamo koliko puta ima zapisani timestamp
+          const updatedStudents = await Promise.all(studentsList.map(async student => {
+            // Dohvati sve timestampove za studenta prema prezimenu
+            const studentDoc = attendanceSnapshot.docs.find(doc => doc.id === student.surname);
 
-          // Ažuriranje studenata s prisutnošću
-          const updatedStudents = studentsList.map(student => ({
-            ...student,
-            present: attendanceSurnames.includes(student.surname),
+            // Ako postoji dokument za studenta
+            if (studentDoc && studentDoc.data().timestamps) {
+              const timestamps = studentDoc.data().timestamps;
+              const attendanceCount = timestamps.length; // Broj timestampova = broj dolazaka
+
+              // Izračunavanje postotka dolazaka
+              const percentage = ((attendanceCount / 13) * 100).toFixed(2);
+
+              return {
+                ...student,
+                attendanceCount,
+                percentage,
+              };
+            }
+
+            return {
+              ...student,
+              attendanceCount: 0,
+              percentage: '0.00',
+            };
           }));
 
           console.log("Updated Students: ", updatedStudents); // Provjera ažuriranih studenata
@@ -74,7 +92,7 @@ const MedicinskiPage = () => {
       textAlign: 'center'
     }}>
       <h2 style={{ fontSize: '30px', color: '#0f1c30', fontFamily: 'Poppins, sans-serif' }}>
-        Izvještaj o prisutnosti
+        Izvještaj o prisutnosti - Medicinski uređaji
       </h2>
 
       {loading ? (
@@ -92,7 +110,8 @@ const MedicinskiPage = () => {
           <thead>
             <tr style={{ backgroundColor: '#668dc0', color: '#fff' }}>
               <th style={{ padding: '10px', border: '1px solid #ddd' }}>Ime i prezime</th>
-              <th style={{ padding: '10px', border: '1px solid #ddd' }}>Prisutan</th>
+              <th style={{ padding: '10px', border: '1px solid #ddd' }}>Dolasci</th>
+              <th style={{ padding: '10px', border: '1px solid #ddd' }}>Postotak</th>
             </tr>
           </thead>
           <tbody>
@@ -102,11 +121,10 @@ const MedicinskiPage = () => {
                   {student.name} {student.surname}
                 </td>
                 <td style={{ padding: '10px', border: '1px solid #ddd', textAlign: 'center' }}>
-                  {student.present ? (
-                    <span style={{ color: '#0f1c30', fontWeight: '600' }}>Da</span>
-                  ) : (
-                    <span style={{ color: '#777' }}>Ne</span>
-                  )}
+                  {student.attendanceCount} / 13
+                </td>
+                <td style={{ padding: '10px', border: '1px solid #ddd', textAlign: 'center' }}>
+                  {student.percentage}%
                 </td>
               </tr>
             ))}
